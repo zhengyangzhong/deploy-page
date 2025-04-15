@@ -97,8 +97,35 @@
       padding: 0 10px 10px;
     }
 
-    .card-footer span {
+    .user-avatar {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      margin-right: 6px;
+      object-fit: cover;
+    }
+
+    .user-name {
       margin-right: 10px;
+      color: #666;
+      font-size: 12px;
+    }
+
+    .interaction-count {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+    }
+
+    .interaction-count span {
+      margin-left: 8px;
+      display: flex;
+      align-items: center;
+    }
+
+    .interaction-count i {
+      margin-right: 3px;
+      font-size: 14px;
     }
 
     .loading {
@@ -115,6 +142,7 @@
       display: none;
     }
   </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 
 <body>
@@ -135,6 +163,20 @@
     let currentScrollTop = 0;
     let isRefreshing = false;
     let dataType = 'default'; // 默认数据类型
+
+    // 用户数据
+    const mockUsers = [
+      { name: "游戏达人", avatar: "https://randomuser.me/api/portraits/men/1.jpg" },
+      { name: "快乐玩家", avatar: "https://randomuser.me/api/portraits/women/2.jpg" },
+      { name: "233小能手", avatar: "https://randomuser.me/api/portraits/men/3.jpg" },
+      { name: "乐园探索者", avatar: "https://randomuser.me/api/portraits/women/4.jpg" },
+      { name: "游戏小白", avatar: "https://randomuser.me/api/portraits/men/5.jpg" },
+      { name: "高手不解释", avatar: "https://randomuser.me/api/portraits/women/6.jpg" },
+      { name: "攻略大师", avatar: "https://randomuser.me/api/portraits/men/7.jpg" },
+      { name: "休闲玩家", avatar: "https://randomuser.me/api/portraits/women/8.jpg" },
+      { name: "竞技王者", avatar: "https://randomuser.me/api/portraits/men/9.jpg" },
+      { name: "萌新求带", avatar: "https://randomuser.me/api/portraits/women/10.jpg" }
+    ];
 
     // 初始化
     document.addEventListener('DOMContentLoaded', function () {
@@ -286,7 +328,7 @@
                               <video poster="${item.cover}" controls>
                                   <source src="${item.url}" type="video/mp4">
                               </video>
-                              <div class="play-icon"> ▶ </div>
+                              <div class="play-icon">▶</div>
                            </div>`
             : `<div class="card-media">
                               <img src="${item.url}" alt="${item.title}">
@@ -299,8 +341,11 @@
                                 <div class="card-title">${item.title}</div>
                             </div>
                             <div class="card-footer">
-                                <span>${item.likes}赞</span>
-                                <span>${item.comments}评论</span>
+                                <img class="user-avatar" src="${item.user.avatar}" alt="${item.user.name}">
+                                <span class="user-name">${item.user.name}</span>
+                                <div class="interaction-count">
+                                    <span><i class="fas fa-heart"></i>${item.likes}</span>
+                                </div>
                             </div>
                         </div>
                     `;
@@ -382,6 +427,7 @@
       for (let i = 0; i < 10; i++) {
         const isVideo = Math.random() > 0.7; // 30%概率是视频
         const randomIndex = Math.floor(Math.random() * titles.length);
+        const randomUser = mockUsers[Math.floor(Math.random() * mockUsers.length)];
 
         items.push({
           type: isVideo ? 'video' : 'image',
@@ -392,6 +438,7 @@
           cover: isVideo ? `https://picsum.photos/400/600?page=${page}&type=${type}&cover=${i}` : null,
           likes: Math.floor(Math.random() * 1000),
           comments: Math.floor(Math.random() * 500),
+          user: randomUser,
           timestamp: Date.now() - Math.floor(Math.random() * 7 * 24 * 60 * 60 * 1000)
         });
       }
